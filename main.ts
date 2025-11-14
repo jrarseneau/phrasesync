@@ -197,47 +197,8 @@ export default class PhraseSync extends Plugin {
             displayText: noteTitle,
         });
 
-        const metadata = this.metadataCache.getFileCache(file);
-        if (metadata?.frontmatter?.tags) {
-            const tags = Array.isArray(metadata.frontmatter.tags)
-                ? metadata.frontmatter.tags
-                : metadata.frontmatter.tags.split(',').map((t: string) => t.trim());
-            tags.forEach((tag: string) => {
-                this.addToIndex(tag, {
-                    type: 'tag',
-                    notePath,
-                    noteTitle,
-                    target: tag,
-                    displayText: `#${tag}`,
-                });
-            });
-        }
-
-        if (metadata?.headings) {
-            metadata.headings.forEach((heading) => {
-                this.addToIndex(heading.heading, {
-                    type: 'heading',
-                    notePath,
-                    noteTitle,
-                    target: heading.heading,
-                    displayText: `${noteTitle} > ${heading.heading}`,
-                });
-            });
-        }
-
-        if (metadata?.sections) {
-            metadata.sections.forEach((section) => {
-                if (section.id) {
-                    this.addToIndex(section.id, {
-                        type: 'block',
-                        notePath,
-                        noteTitle,
-                        target: section.id,
-                        displayText: `${noteTitle} > #${section.id}`,
-                    });
-                }
-            });
-        }
+        // Tags, headings, and block references indexing disabled
+        // Only note titles are indexed for suggestions
     }
 
     private addToIndex(key: string, entry: IndexEntry) {
